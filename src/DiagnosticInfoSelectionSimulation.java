@@ -29,12 +29,12 @@ public class DiagnosticInfoSelectionSimulation {
             return diagnosticGraph;
         }
 
-        public void makeSimulation()
+        public void makeSimulation(int minChecks, int maxChecks)
         {
             int i, j, k;
             int n = this.diagnosticGraph.length;
             int viWorks, vjWorks;
-            int ChecksNumber = random.nextInt(25)+5;
+            int ChecksNumber = random.nextInt(maxChecks-minChecks+1)+minChecks;
             List<Integer> elementaryChecks = new ArrayList<>();
             double noise = 0; // it's needed for simulate probability of error (in transmission, interpreting etc.)
 
@@ -86,16 +86,26 @@ public class DiagnosticInfoSelectionSimulation {
             return this.modulesPairsElementaryChecks;
         }
     }
-
     List<int[][]> diagnosticGraphs = new ArrayList<>();
+    int minElementaryChecksNum = 0, maxElementaryChecksNum = 0;
 
-    public DiagnosticInfoSelectionSimulation(List<int[][]> graphs) throws InvalidAttributeValueException {
+    public DiagnosticInfoSelectionSimulation(List<int[][]> graphs, int minChecksNum, int maxChecksNum) throws InvalidAttributeValueException {
         if(graphs.isEmpty())
         {
             throw new InvalidAttributeValueException("Empty list of diagnostic graphs");
         }
+        if(minChecksNum<1)
+        {
+            throw new InvalidAttributeValueException("Min number of elementary checks must be at least 1 (recommended to enter 4 or greater)");
+        }
+        if(maxChecksNum<minChecksNum)
+        {
+            throw new InvalidAttributeValueException("Max number of elementary checks can't be less than its min number");
+        }
 
         this.diagnosticGraphs = graphs;
+        this.minElementaryChecksNum = minChecksNum;
+        this.maxElementaryChecksNum = maxChecksNum;
     }
 
     public List<List<Integer>> makeSimulation() throws InvalidAttributeValueException {
@@ -105,7 +115,7 @@ public class DiagnosticInfoSelectionSimulation {
         for(var A : diagnosticGraphs)
         {
             simulation = new PairChecksSimulation(A);
-            simulation.makeSimulation();
+            simulation.makeSimulation(this.minElementaryChecksNum, this.maxElementaryChecksNum);
             checksSeriesList.addAll(simulation.getSimulationResult());
         }
 
@@ -122,7 +132,7 @@ public class DiagnosticInfoSelectionSimulation {
         for(var A : diagnosticGraphs)
         {
             simulation = new PairChecksSimulation(A);
-            simulation.makeSimulation();
+            simulation.makeSimulation(this.minElementaryChecksNum, this.maxElementaryChecksNum);
             checksSeriesList.addAll(simulation.getSimulationResult());
         }
 
