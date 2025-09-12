@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PreparatSchemaSelfDiagnosisImitation:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PreparatSchemaSelfDiagnosisImitation_jar</output-path>
+    <root id="archive" name="PreparatSchemaSelfDiagnosisImitation.jar">
+      <element id="module-output" name="PreparatSchemaSelfDiagnosisImitation" />
+    </root>
+  </artifact>
+</component>
